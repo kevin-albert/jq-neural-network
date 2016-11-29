@@ -1,4 +1,12 @@
 #!/bin/bash
-jq -f main.jq \
-  --argjson config '{ "input_size": 3, "hidden_size": 10, "output_size": 2 }' \
-  input.json
+
+set -e
+
+if [ ! -s make_json ]
+then
+    echo "compiling 'make_json.c'"
+    gcc -Ofast make_json.c -o make_json
+fi
+
+./make_json \
+    | jq -f main.jq --argjson config "$(cat config-mnist.json)"
