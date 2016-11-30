@@ -8,35 +8,26 @@ def array_2d(size1; size2; filter):
 def initial_state(args):
   args as $args 
   |{
-    # momentum (not used yet)
-    alpha:            0.04,
+    # momentum (not used yet. someday)
+    # alpha:            0.04,
 
     # learning rate
     eta:              0.1,
 
     # input layer
     input_gradients:  (array_init($args.input_size; 0)),
-    input_deltas:     (array_init($args.input_size; 0)),
 
     # input -> hidden weights
     ih_weights:       (array_2d($args.input_size; $args.hidden_size; rand(0.1))),
-    ih_deltas:        (array_2d($args.input_size; $args.hidden_size; 0)),
-    ih_gradients:     (array_2d($args.input_size; $args.hidden_size; 0)),
 
     # hidden layer
-    hidden_biases:    (array_init($args.hidden_size; rand(0.1))),               #TODO rand(0.1)
-    hidden_gradients: (array_init($args.hidden_size; 0)),
-    hidden_deltas:    (array_init($args.hidden_size; 0)),
+    hidden_biases:    (array_init($args.hidden_size; rand(0.1))),
 
     # hidden -> output weights
     ho_weights:       (array_2d($args.hidden_size; $args.output_size; rand(0.1))),
-    ho_deltas:        (array_2d($args.hidden_size; $args.output_size; 0)),
-    ho_gradients:     (array_2d($args.hidden_size; $args.output_size; 0)),
 
     # output layer
-    output_biases:    (array_init($args.output_size; rand(0.1))),               #TODO rand(0.1)
-    output_gradients: (array_init($args.output_size; 0)),
-    output_deltas:    (array_init($args.output_size; 0))
+    output_biases:    (array_init($args.output_size; rand(0.1)))
   } ;
 
 

@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    puts("\"hello\""); // first input record is ignored
     process_set("train-labels-idx1-ubyte", "train-images-idx3-ubyte", t, 1);
     process_set("t10k-labels-idx1-ubyte",  "t10k-images-idx3-ubyte",  n, 0);
 }
