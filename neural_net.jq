@@ -50,7 +50,7 @@ def forwardpass:
       vec_add(
         .output_biases; 
         multiply([.hidden_activations]; .ho_weights) | .[0])
-          | map(sigmoid) ) ;
+      | map(sigmoid) ) ;
 
 
 # generate deltas between .output_activations and the expected data set
@@ -59,8 +59,8 @@ def backwardpass:
   # calculate output gradients
   .output_gradients = (
       [ vec_sub(.output_activations; .expected) ]
-        | transpose 
-        | map(.[0]) ) 
+      | transpose 
+      | map(.[0]) ) 
 
   # calculate hidden gradients
   | .hidden_gradients = 
