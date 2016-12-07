@@ -1,0 +1,41 @@
+body {
+    text-align: center;
+}
+
+.main {
+    margin: auto;
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
+}
+
+.inner {
+    padding: 0 10px;
+}
+
+h1 {
+    font-size: 3em;
+    font-family: Lora, serif;
+    font-weight: normal;
+    margin: 20px 0 10px;
+}
+
+p {
+    font-family: Raleway, sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+}
+
+.author {
+    font-style: italic;
+}
+
+a {
+    text-decoration: none;
+    color: #0b96d0;
+}
+
+a:hover {
+    text-decoration: underline;
+}

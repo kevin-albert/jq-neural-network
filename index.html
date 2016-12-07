@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <title>Machine Learning With Jq</title>
+    <link rel="stylesheet" type="text/css" href="reset.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora|Raleway">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+    <div class="main">
+    <div class="inner">
+        <h1>Machine Learning With Jq</h1>
+            <p><span class="author">Kevin Albert | <a href="https://twitter.com/kevybabysc">@kevybabysc</a></span></p>
+            <p>Using the JSON-processing language <a href="https://stedolan.github.io/jq/" title="jq">jq</a>, I built a neural network that classified digits in the <a href="http://yann.lecun.com/exdb/mnist/" title="MNIST handwritten digit database">MNIST database</a> with 94.07% accuracy. While this pales in comparison to other networks that have classified the same dataset almost perfectly, it does demonstrate the expressive power of jq, a tool that is typically only used for pretty-printing JSON. 
+            </p>
+            <p>Because data in jq is immutable, the dense three-layer nework (784-100-10) is accumulated through a tail-recursive reduction across the input dataset. The entire neural network library is only 160 lines long (including a decent amount of comments). Running on a t2.micro in AWS, the entire training / testing process took about a week.</p>
+            <p>Check out the codebase: <a href="https://github.com/kevin-albert/jq-neural-network">https://github.com/kevin-albert/jq-neural-network</a></p>
+        </div>
+    </div>
+</body>
+</html>
