@@ -1,40 +1,71 @@
-include "util";
+
+################################################################################
+# Math / utility functions
+################################################################################
 
 def array_init(size; filter): [ range(size) | filter ];
 
 def array_2d(size1; size2; filter): 
   array_init(size1; array_init(size2; filter)) ;
 
-def initial_state(args):
-  args as $args 
-  |{
-    # momentum (not used yet. someday)
-    # alpha:            0.04,
+def log(thing):
+  (thing|debug) as $_
+  | . ; 
 
-    # learning rate
-    eta:              0.1,
+def rand(scale):  
+  . * 15485863 
+  | . % 1000
+  | . - 500
+  | . / 1000
+  | . * scale ;
 
-    # input layer
-    input_gradients:  (array_init($args.input_size; 0)),
+# σ(x)
+def sigmoid:
+  2.718281828459045 as $E
+  | 1 / (1 + pow($E; -.)) ;
 
-    # input -> hidden weights
-    ih_weights:       (array_2d($args.input_size; $args.hidden_size; rand(0.1))),
+# dsigmoid(y) = σ'(x) where y = σ(x)
+def dsigmoid:
+  . * (1 - .) ;
 
-    # hidden layer
-    hidden_biases:    (array_init($args.hidden_size; rand(0.1))),
+def dot(a; b):
+  a as $a | b as $b
+  | reduce range(0; $a|length) as $i (0; . + ($a[$i] * $b[$i]) ) ;
 
-    # hidden -> output weights
-    ho_weights:       (array_2d($args.hidden_size; $args.output_size; rand(0.1))),
+def vec_add(a; b):
+  a as $a | b as $b 
+  | reduce range(0; $a|length) as $i ([]; . + [$a[$i] + $b[$i]]) ;
 
-    # output layer
-    output_biases:    (array_init($args.output_size; rand(0.1)))
-  } ;
+def vec_sub(a; b):
+  a as $a | b as $b
+  | reduce range(0; $a|length) as $i ([]; . + [$a[$i] - $b[$i]]) ;
+
+def matrix_add(A; B):
+  A as $A | B as $B
+  | reduce range(0; $A|length) as $i ([]; . + [vec_add($A[$i]; $B[$i])]) ;
+
+def matrix_scale(s):
+  s as $s |
+  map(map(. * s)) ;
+
+def multiply(A; B):
+  A as $A | B as $B
+  | ($B[0]|length) as $p
+  | ($B|transpose) as $BT
+  | reduce range(0; $A|length) as $i
+       ([]; reduce range(0; $p) as $j 
+         (.; .[$i][$j] = dot( $A[$i]; $BT[$j] ) )) ;
+
+def hadamard(A; B):
+  A as $A | B as $B 
+  | reduce range(0; $A|length) as $i
+      ([]; . + [$A[$i] * $B[$i]]) ;
 
 
-#
-# algorithms mimic the style of 
+################################################################################
+# neural network algorithms, in the style of 
 # http://briandolhansky.com/blog/2014/10/30/artificial-neural-networks-matrix-form-part-5
-#
+################################################################################
 
 # process .input_activations to product .output_activations
 def forwardpass:
@@ -99,3 +130,31 @@ def updateweights:
   # update output biases
   | .output_biases = vec_add(.output_biases; .output_gradients|map(. * -$eta)) ;
   
+
+# initialize layers
+def initial_state(args):
+  args as $args 
+  |{
+    # momentum (not used yet. someday)
+    # alpha:            0.04,
+
+    # learning rate - this should eventually get passed in via configuration
+    eta:              0.1,
+
+    # input layer
+    input_gradients:  (array_init($args.input_size; 0)),
+
+    # input -> hidden weights
+    ih_weights:       (array_2d($args.input_size; $args.hidden_size; rand(0.1))),
+
+    # hidden layer
+    hidden_biases:    (array_init($args.hidden_size; rand(0.1))),
+
+    # hidden -> output weights
+    ho_weights:       (array_2d($args.hidden_size; $args.output_size; rand(0.1))),
+
+    # output layer
+    output_biases:    (array_init($args.output_size; rand(0.1)))
+  } ;
+
+

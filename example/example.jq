@@ -1,14 +1,9 @@
-include "util";
-include "neural_net";
+include "../neural_net";
 
 def max_index:
   . as $array
   | reduce range(0; .|length) as $i 
-    ( 0; 
-      if $array[$i] > $array[.] then $i
-      else .
-      end
-    ) ;
+    ( 0; if $array[$i] > $array[.] then $i else . end ) ;
 
 def main:
   (

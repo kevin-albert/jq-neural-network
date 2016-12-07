@@ -1,14 +1,13 @@
 # jq-neural-network
-A neural network written completely in jq.
+A neural network written completely in jq. Sample program processes the MNIST image dataset with a success rate of 94%.
 
-## How to run:
+## Running the sample program:
 ```
-$ ./run.sh
+$ ./example/run.sh
 ```
 This will first compile `make_json.c`, which parses MNIST data files and produces JSON.  Then it will run `make_json` and pipe it into jq, first processing the training set and then the test set. When finished, jq will emit the error rate of the test set.  
 
-This will take a **LONG** time to run. Maybe a day. Days? I don't know. I've never waited for it to finish with the whole data
-set.
+This may take days to run to completion.
 
 ## Why
 Two reasons:
@@ -31,7 +30,21 @@ The input is a stream of records like:
 }
 ```
 
-## Project overview
-The main reduction is in `main.jq`. Neural network filters (forwardpass, backwardpass, updateweights) are contained in `neural_net.jq` and vector / matrix / utility functions live in `util.jq`.  
+It occasionally logs its progress to `stderr` in the form of jq debug statements:
+```js
+["DEBUG:","total: 66400, train: 59999, test: 6401, errors: 446"]
+```
 
-Additionally, MNIST data files are included along with a parser (`make_json.c`).
+Its final output is the number of records processed and error rate:
+```js
+{
+  "error_rate": 0.0593,
+  "num_errors": 593,
+  "num_train": 59999,
+  "num_test": 10000,
+  "num_total": 69999
+}
+```
+
+## Project overview
+The example program, configuration, and data live in `example/example.jq`. Neural network library is in `neural_net.jq`, and sample configuration file for a tiny network is in `config-trivial.json`  

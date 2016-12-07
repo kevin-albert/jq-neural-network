@@ -1,4 +1,9 @@
-//image_reader.c
+// 
+// Reads the MNIST database and outputs JSON suitable for example.jq
+// usage: ./make_json -t [train-size] [-n test-size]
+//  where `train-size` is between 1 and 60000 and `test-size` is between 1 and
+//  10000 
+//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +34,7 @@ int main(int argc, char **argv) {
                 break;
             case 'n':
                 n = atoi(optarg);
-                if (n < 1 || t > 10000) {
+                if (n < 1 || n > 10000) {
                     fprintf(stderr, "invalid data set size " 
                                     "(must be between 1 and 10000): %s\n", optarg);
                     exit(EXIT_FAILURE);
