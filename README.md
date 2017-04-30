@@ -7,13 +7,7 @@ $ ./example/run.sh
 ```
 This will first compile `make_json.c`, which parses MNIST data files and produces JSON.  Then it will run `make_json` and pipe it into jq, first processing the training set and then the test set. When finished, jq will emit the error rate of the test set.  
 
-This may take days to run to completion.
-
-## Why
-Two reasons:
-
-1. To demonstrate how powerful the jq language is by writing a non-trivial full program with it
-2. To exercise writing a neural network without using the "standard" tool set (no python)
+This usually takes days to run to completion.
 
 ## How it works
 A typical feedforward neural network would be implemented by allocating several arrays and continually updating their values. Because data in jq is immutable, this continual state update is implemented as a reduction over all input, where the state of the network is the value being accumulated in the reduction. A benefit of this is that the state of the network could be easily saved / loaded to and from json files in between program executions.  
